@@ -5,12 +5,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import utils.JsonSoftAssertions;
 
 import java.io.IOException;
 import java.io.InputStream;
 
 import static io.restassured.RestAssured.given;
+import static utils.JsonSoftAssertions.assertJsonEquals;
 
 public class PositiveWeatherTest extends BaseApiTest {
 
@@ -33,7 +33,6 @@ public class PositiveWeatherTest extends BaseApiTest {
                 .get("/v1/current.json");
 
         SoftAssertions softAssertions = new SoftAssertions();
-
         softAssertions.assertThat(response.statusCode())
                 .as("HTTP статус код")
                 .isEqualTo(200);
@@ -54,7 +53,7 @@ public class PositiveWeatherTest extends BaseApiTest {
         JsonNode actual = objectMapper.readTree(response.asInputStream());
         // JsonNode expected = objectMapper.readTree(expectedJson);
 
-        JsonSoftAssertions.assertJsonEquals(
+        assertJsonEquals(
                 expected,
                 actual,
                 softAssertions
