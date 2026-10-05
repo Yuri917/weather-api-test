@@ -37,13 +37,13 @@ public class JsonSoftAssertions {
 
             } else {
                 if (expectedValue.equals(actualValue)) {
-                    log.info("{} OK | expected {} | actual={}",
+                    log.info("{} OK | expected {} | actual {}",
                             currentPath,
                             expectedValue,
                             actualValue
                     );
                 } else {
-                    log.error("{} DIFFERENCE | expected {} | actual={}",
+                    log.error("{} DIFFERENCE | expected {} | actual {}",
                             currentPath,
                             expectedValue,
                             actualValue
@@ -58,7 +58,7 @@ public class JsonSoftAssertions {
 
             if (!expected.has(field)) {
                 String currentPath = path + "." + field;
-                log.error("{} DIFFERENCE | expected=<missing> | actual = {}",
+                log.error("{} DIFFERENCE | expected <missing> | actual {}",
                         currentPath,
                         actual.get(field)
                 );

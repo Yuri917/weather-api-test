@@ -27,7 +27,7 @@ public class BaseApiTest {
     // только после старта сервера (runtime).
     protected RequestSpecification spec;
     protected WeatherStubs stubs;
-//    protected ObjectMapper mapper;
+    protected ObjectMapper objectMapper;
 
     @BeforeEach
     void setUp() {
@@ -38,6 +38,6 @@ public class BaseApiTest {
                 .build();
 
         stubs = new WeatherStubs(wm);
-//        mapper = new ObjectMapper();
+        objectMapper = new ObjectMapper();
     }
 }

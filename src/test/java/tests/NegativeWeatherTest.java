@@ -8,16 +8,13 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.io.InputStream;
 
-import static org.hamcrest.Matchers.equalTo;
 import static io.restassured.RestAssured.given;
 import static utils.JsonSoftAssertions.assertJsonEquals;
 
 public class NegativeWeatherTest extends BaseApiTest {
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
-
     @Test
-    public void apiKeyNotProvidedTest() throws IOException {
+    void apiKeyNotProvidedTest() throws IOException {
         stubs.stubApiKeyNotProvided();
 
         var response = given()
@@ -25,9 +22,6 @@ public class NegativeWeatherTest extends BaseApiTest {
                 .when()
                 .queryParam("q", "Sochi")
                 .get("/v1/current.json");
-//                .then()
-//                .statusCode(401)
-//                .body("error.code", equalTo(1002));
 
         SoftAssertions softAssertions = new SoftAssertions();
         softAssertions.assertThat(response.statusCode())
@@ -55,16 +49,13 @@ public class NegativeWeatherTest extends BaseApiTest {
     }
 
     @Test
-    public void qNotProvidedTest() throws IOException {
+    void qNotProvidedTest() throws IOException {
         stubs.stubQNotProvided();
 
         var response = given()
                 .spec(spec)
                 .when()
                 .get("/v1/current.json");
-//                    .then()
-//                    .statusCode(400)
-//                    .body("error.code", equalTo(1003));
 
         SoftAssertions softAssertions = new SoftAssertions();
         softAssertions.assertThat(response.statusCode())
@@ -92,16 +83,13 @@ public class NegativeWeatherTest extends BaseApiTest {
     }
 
     @Test
-    public void invalidUrlTest() throws IOException {
+    void invalidUrlTest() throws IOException {
         stubs.stubInvalidUrl();
 
         var response = given()
                 .spec(spec)
                 .when()
                 .get("/v1/wrong");
-//                .then()
-//                .statusCode(400)
-//                .body("error.code", equalTo(1005));
 
         SoftAssertions softAssertions = new SoftAssertions();
         softAssertions.assertThat(response.statusCode())
@@ -129,7 +117,7 @@ public class NegativeWeatherTest extends BaseApiTest {
     }
 
     @Test
-    public void apiKeyInvalidTest() throws IOException {
+    void apiKeyInvalidTest() throws IOException {
         stubs.stubApiKeyInvalid();
 
         var response = given()
@@ -138,9 +126,6 @@ public class NegativeWeatherTest extends BaseApiTest {
                 .queryParam("key", "invalid-key")
                 .queryParam("q", "Sochi")
                 .get("/v1/current.json");
-//                .then()
-//                .statusCode(401)
-//                .body("error.code", equalTo(2006));
 
         SoftAssertions softAssertions = new SoftAssertions();
         softAssertions.assertThat(response.statusCode())
