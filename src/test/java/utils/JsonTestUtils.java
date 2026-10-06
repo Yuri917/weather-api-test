@@ -1,57 +1,37 @@
-//package utils;
-//
-//import com.fasterxml.jackson.databind.JsonNode;
-//import com.fasterxml.jackson.databind.ObjectMapper;
-//import io.restassured.response.Response;
-//import io.restassured.specification.RequestSpecification;
-//import org.assertj.core.api.SoftAssertions;
-//
-//import java.io.IOException;
-//import java.io.InputStream;
-//
-//import static io.restassured.RestAssured.given;
-//import static utils.JsonSoftAssertions.assertJsonEquals;
-//
-//public class JsonTestUtils {
-//
-//    public static JsonNode assertResponseJson(
-//            ObjectMapper objectMapper,
-//            InputStream inputStream,
-//            RequestSpecification spec,
-//            SoftAssertions softAssertions) throws IOException {
-//
-//        Response response = given()
-//                .spec(spec)
-//                .queryParam("q", cityName)
-//                .when()
-//                .get("/v1/current.json");
-//
-//        softAssertions.assertThat(response.statusCode())
-//                .as("HTTP статус код")
-//                .isEqualTo(200);
-//
-//        JsonNode expected;
-//        try (InputStream expectedStream = JsonTestUtils.class.getResourceAsStream("/expected/" + expectedFile)) {
-//
-//            if (expectedStream == null) {
-//                throw new IllegalStateException("Не найден expected JSON");
-//            }
-//
-//            expected = objectMapper.readTree(expectedStream);
-//        }
-//
-//        JsonNode actual = objectMapper.readTree(response.asInputStream());
-//
-//        assertJsonEquals(
-//                expected,
-//                actual,
-//                softAssertions
-//        );
-//
-//        softAssertions.assertAll();
-//
-//
-//        return null;
-//    }
-//}
-//
+package utils;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.restassured.response.Response;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UncheckedIOException;
+
+public class JsonTestUtils {
+
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+
+    public static JsonNode readJson(String resourcePath) {
+        try (InputStream stream = JsonTestUtils.class.getResourceAsStream(resourcePath)) {
+            if (stream == null) {
+                throw new IllegalStateException("Не найден JSON: " + resourcePath);
+            }
+
+            return OBJECT_MAPPER.readTree(stream);
+
+        } catch (IOException e) {
+            throw new UncheckedIOException("Не удалось прочитать JSON: " + resourcePath, e);
+        }
+    }
+
+    public static JsonNode readJson(Response response) {
+        try {
+            return OBJECT_MAPPER.readTree(response.asString());
+
+        } catch (IOException e) {
+            throw new UncheckedIOException(
+                    "Не удалось прочитать JSON из HTTP response", e);
+        }
+    }
+}

@@ -37,6 +37,7 @@ dependencies {
 }
 
 tasks.test {
+    systemProperty("file.encoding", "UTF-8")
     useJUnitPlatform()
     maxHeapSize = "2g"
     testLogging {
