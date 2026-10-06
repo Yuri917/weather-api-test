@@ -5,6 +5,7 @@ import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
 import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.specification.RequestSpecification;
+import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import stubs.WeatherStubs;
@@ -12,10 +13,10 @@ import stubs.WeatherStubs;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 import static com.github.tomakehurst.wiremock.junit5.WireMockExtension.newInstance;
 
-public class BaseApiTest {
+public abstract class BaseApiTest {
 
     // Один WireMock-сервер на все тесты класса.
-    // static — потому что JUnit создаёт новый инстанс тест-класса на каждый тест,
+    // Модификатор static — потому что JUnit создаёт новый инстанс тест-класса на каждый тест,
     // без static сервер пересоздавался бы перед каждым тестом.
     @RegisterExtension
     static WireMockExtension wm = newInstance()
@@ -28,6 +29,7 @@ public class BaseApiTest {
     protected RequestSpecification spec;
     protected WeatherStubs stubs;
     protected ObjectMapper objectMapper;
+    protected SoftAssertions softAssertions;
 
     @BeforeEach
     void setUp() {
@@ -39,5 +41,6 @@ public class BaseApiTest {
 
         stubs = new WeatherStubs(wm);
         objectMapper = new ObjectMapper();
+        softAssertions = new SoftAssertions();
     }
 }

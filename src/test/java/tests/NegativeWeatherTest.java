@@ -1,8 +1,6 @@
 package tests;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -23,7 +21,6 @@ public class NegativeWeatherTest extends BaseApiTest {
                 .queryParam("q", "Sochi")
                 .get("/v1/current.json");
 
-        SoftAssertions softAssertions = new SoftAssertions();
         softAssertions.assertThat(response.statusCode())
                 .as("HTTP статус код")
                 .isEqualTo(401);
@@ -57,7 +54,6 @@ public class NegativeWeatherTest extends BaseApiTest {
                 .when()
                 .get("/v1/current.json");
 
-        SoftAssertions softAssertions = new SoftAssertions();
         softAssertions.assertThat(response.statusCode())
                 .as("HTTP статус код")
                 .isEqualTo(400);
@@ -91,7 +87,6 @@ public class NegativeWeatherTest extends BaseApiTest {
                 .when()
                 .get("/v1/wrong");
 
-        SoftAssertions softAssertions = new SoftAssertions();
         softAssertions.assertThat(response.statusCode())
                 .as("HTTP статус код")
                 .isEqualTo(400);
@@ -127,7 +122,6 @@ public class NegativeWeatherTest extends BaseApiTest {
                 .queryParam("q", "Sochi")
                 .get("/v1/current.json");
 
-        SoftAssertions softAssertions = new SoftAssertions();
         softAssertions.assertThat(response.statusCode())
                 .as("HTTP статус код")
                 .isEqualTo(401);
