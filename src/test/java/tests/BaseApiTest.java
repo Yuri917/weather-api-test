@@ -1,6 +1,5 @@
 package tests;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
 import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.builder.RequestSpecBuilder;
@@ -28,7 +27,6 @@ public abstract class BaseApiTest {
     // только после старта сервера (runtime).
     protected RequestSpecification spec;
     protected WeatherStubs stubs;
-    protected ObjectMapper objectMapper;
     protected SoftAssertions softAssertions;
 
     @BeforeEach
@@ -40,7 +38,6 @@ public abstract class BaseApiTest {
                 .build();
 
         stubs = new WeatherStubs(wm);
-        objectMapper = new ObjectMapper();
         softAssertions = new SoftAssertions();
     }
 }
